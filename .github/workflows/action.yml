@@ -32,14 +32,3 @@ jobs:
           npx gh-pages -d build -u "github-actions-bot <support+actions@github.com>"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      # - name: Test the app
-      #   uses: borales/actions-yarn@v4
-      #   with:
-      #     cmd: test # will run `yarn test` command
-
-      # - name: Run test in sub-folder
-      #   uses: borales/actions-yarn@v4
-      #   with:
-      #     cmd: test
-      #     dir: "frontend" # will run `yarn test` in `frontend` sub folder
