@@ -20,11 +20,18 @@ jobs:
         uses: borales/actions-yarn@v4
         with:
           cmd: install # will run `yarn install` command
+
       - name: Build production bundle
         uses: borales/actions-yarn@v4
         with:
-          cmd: deploy # will run `yarn build` command
+          cmd: build # will run `yarn build` command
 
+      - name: Deploy with gh-pages
+        run: |
+          git remote set-url origin https://git:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git
+          npm run deploy -- -u "github-actions-bot <support+actions@github.com>"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       # - name: Test the app
       #   uses: borales/actions-yarn@v4
