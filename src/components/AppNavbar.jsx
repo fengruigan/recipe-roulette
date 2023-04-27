@@ -12,7 +12,7 @@ function AppNavbar() {
         <Navbar.Brand href="#home">Recipe Roulette</Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
-          <Nav className="me-auto">
+          <Nav className="ms-auto me-0">
             <Nav.Link href="#home">Home</Nav.Link>
             <Nav.Link href="#action/3.1">
               <FontAwesomeIcon icon={faUser} /> Sign in/up
