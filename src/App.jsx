@@ -1,17 +1,13 @@
 import React from "react";
-import logo from "./logo.svg";
+import AppNavbar from "./components/AppNavbar";
+import RecipePage from "./pages/RecipePage";
 import "./App.css";
 
 const App = () => {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>If you see this, this site is auto deployed</p>
-        <a className="App-link" href="https://reactjs.org" target="_blank" rel="noopener noreferrer">
-          Learn React
-        </a>
-      </header>
+      <AppNavbar />
+      <RecipePage />
     </div>
   );
 };
