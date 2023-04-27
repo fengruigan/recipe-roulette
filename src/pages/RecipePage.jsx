@@ -15,7 +15,6 @@ const RecipePage = () => {
       body: body,
     });
     const data = await res.json(); // recipe array
-    console.log(data);
     setRecipes([...data["recipes"]]);
   };
 
@@ -33,7 +32,7 @@ const RecipePage = () => {
 
       {recipes
         ? recipes.map((recipe, idx) => {
-            return <RecipeDisplay key={idx} recipe={recipe} />;
+            return <RecipeDisplay key={idx} />;
           })
         : null}
     </div>
