@@ -1,28 +1,67 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import Container from "react-bootstrap/Container";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUser, faUserPlus } from "@fortawesome/free-solid-svg-icons";
-import useAuth from "../hooks/useAuth";
+import { faCalendarDays, faCircleUser, faJarWheat, faUser, faUserPlus } from "@fortawesome/free-solid-svg-icons";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
+import { NavDropdown } from "react-bootstrap";
+import { AuthContext } from "../contexts/AuthContext";
+import { getAuthedUserEmail, logout } from "../functions/auth";
 
 const AppNavbar = () => {
-  const { getAuthedUserAttributes, verifySession } = useAuth();
-  const [displayEmail, setDisplayEmail] = useState("");
-  const [isSessionValid, setIsSessionValid] = useState(false);
+  const [displayEmail, setDisplayEmail] = useState(null);
+  const { user, setUser, isAuthed } = useContext(AuthContext);
 
   useEffect(() => {
-    const getUserEmail = async () => {
-      const valid = await verifySession(true);
-      setIsSessionValid(valid);
-      if (valid) {
-        const attirbutes = await getAuthedUserAttributes();
-        const email = attirbutes.filter((el) => el.Name === "email").map((el) => el.Value)[0];
+    const displayEmail = async () => {
+      if (user && isAuthed) {
+        const email = await getAuthedUserEmail(user);
         setDisplayEmail(email);
+      } else {
+        setDisplayEmail(null);
       }
     };
-    getUserEmail();
-  }, [verifySession, getAuthedUserAttributes]);
+
+    displayEmail();
+  }, [user, isAuthed, getAuthedUserEmail]);
+
+  const NavDropdownTitle = (
+    <>
+      <FontAwesomeIcon icon={faCircleUser} className="me-1" />
+      My Account
+    </>
+  );
+
+  const loggedInNav = (
+    <NavDropdown title={NavDropdownTitle} id="basic-nav-dropdown" align="end">
+      <NavDropdown.ItemText>
+        <div>Logged in as</div>
+        <div>{displayEmail}</div>
+      </NavDropdown.ItemText>
+      <NavDropdown.Divider />
+      <NavDropdown.Item href="/account">
+        <FontAwesomeIcon icon={faUser} className="me-1" />
+        Account
+      </NavDropdown.Item>
+      <NavDropdown.Item href="#action/3.2">
+        <FontAwesomeIcon icon={faJarWheat} className="me-1" />
+        Pantry
+      </NavDropdown.Item>
+      <NavDropdown.Item href="#action/3.3">
+        <FontAwesomeIcon icon={faCalendarDays} className="me-1" />
+        Plans
+      </NavDropdown.Item>
+      <NavDropdown.Divider />
+      <NavDropdown.Item
+        onClickCapture={() => {
+          logout(user);
+          setUser(null);
+        }}
+      >
+        Logout
+      </NavDropdown.Item>
+    </NavDropdown>
+  );
 
   return (
     <Navbar className="AppNavbar" bg="light" expand="lg">
@@ -32,11 +71,8 @@ const AppNavbar = () => {
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="ms-auto me-0">
             <Nav.Link href="/">Home</Nav.Link>
-            {isSessionValid ? (
-              <Nav.Link href="/account">
-                <FontAwesomeIcon icon={faUser} className="me-1" />
-                Logged in as {displayEmail}
-              </Nav.Link>
+            {displayEmail ? (
+              loggedInNav
             ) : (
               <Nav.Link href="/signin">
                 <FontAwesomeIcon icon={faUserPlus} className="me-1" />
