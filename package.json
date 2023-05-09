@@ -1,7 +1,7 @@
 {
   "name": "recipe",
   "version": "0.1.0",
-  "homepage": "https://fengruigan.github.io/recipe-roulette",
+  "homepage": "https://fengruigan.github.io/recipe-roulette/#",
   "license": "MIT",
   "private": true,
   "dependencies": {
