@@ -74,7 +74,7 @@ const AppNavbar = () => {
             {displayEmail ? (
               loggedInNav
             ) : (
-              <Nav.Link href="/signin">
+              <Nav.Link href="/auth">
                 <FontAwesomeIcon icon={faUserPlus} className="me-1" />
                 Sign in/up
               </Nav.Link>

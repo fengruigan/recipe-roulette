@@ -1,23 +1,14 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext } from "react";
 import { Button, Form, Container } from "react-bootstrap";
-import { Link, useNavigate } from "react-router-dom";
 
-import { AuthContext } from "../contexts/AuthContext";
-import { authenticateUser } from "../functions/auth";
+import { AuthContext } from "../../contexts/AuthContext";
+import { authenticateUser } from "../../functions/auth";
+import PropTypes from "prop-types";
 
-const SignIn = () => {
+const SignIn = ({ email, setEmail, password, setPassword, setForm }) => {
   document.title = "Recipe Roulette | Sign-in";
-  const [password, setPassword] = useState("");
-  const [email, setEmail] = useState("");
-  const navigate = useNavigate();
 
-  const { userPool, setUser, isAuthed, setIsAuthed } = useContext(AuthContext);
-
-  useEffect(() => {
-    if (isAuthed) {
-      navigate("/");
-    }
-  }, [isAuthed]);
+  const { userPool, setUser, setIsAuthed } = useContext(AuthContext);
 
   const handleSignIn = async (e) => {
     e.preventDefault();
@@ -28,9 +19,8 @@ const SignIn = () => {
       }
       if (result.success) {
         await setIsAuthed(true);
-        navigate("/");
       } else {
-        navigate("/confirm");
+        setForm("confirmRegistration");
       }
     } catch (err) {
       switch (err.code) {
@@ -53,25 +43,43 @@ const SignIn = () => {
       <Form>
         <Form.Group className="mb-3" controlId="formEmail">
           <Form.Label>Email address</Form.Label>
-          <Form.Control type="email" placeholder="Enter email" onChange={(e) => setEmail(e.target.value)} />
+          <Form.Control
+            type="email"
+            placeholder="Enter email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
         </Form.Group>
 
         <Form.Group className="mb-3" controlId="formPassword">
           <Form.Label>Password</Form.Label>
-          <Form.Control type="password" placeholder="Password" onChange={(e) => setPassword(e.target.value)} />
+          <Form.Control
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
         </Form.Group>
+        <Form.Text className="mb-2 text-primary cursor-pointer" onClick={() => setForm("signUp")} as="div">
+          New User? Create an account here
+        </Form.Text>
+        <Form.Text className="mb-2 text-primary cursor-pointer" onClick={() => setForm("passwordRecovery")} as="div">
+          Forgot Password?
+        </Form.Text>
         <Button variant="primary" onClick={handleSignIn}>
           Sign In
         </Button>
-        <Form.Text className="ms-2" muted={false}>
-          New User?
-          <Link to="/signup" className="ms-1">
-            Create an account here
-          </Link>
-        </Form.Text>
       </Form>
     </Container>
   );
 };
 
 export default SignIn;
+
+SignIn.propTypes = {
+  email: PropTypes.string,
+  setEmail: PropTypes.func,
+  password: PropTypes.string,
+  setPassword: PropTypes.func,
+  setForm: PropTypes.func,
+};

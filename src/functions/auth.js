@@ -118,19 +118,23 @@ const signUpUser = (userPool, email, password) => {
   });
 };
 
-const confirmRegistration = (user, code) => {
+const confirmRegistration = (userPool, email, password, code) => {
   return new Promise((resolve, reject) => {
-    if (!user) {
-      reject("No user specified");
-      return;
-    }
-    user.confirmRegistration(code, true, (err, result) => {
-      if (err) {
+    const user = new CognitoUser({
+      Username: email,
+      Pool: userPool,
+    });
+    user.confirmRegistration(code, true, async (err, result) => {
+      if (err || result !== "SUCCESS") {
         reject(err);
         return;
       }
-      resolve(result);
-      return;
+      try {
+        const signInResult = await authenticateUser(userPool, email, password);
+        resolve(signInResult);
+      } catch (err) {
+        reject(err);
+      }
     });
   });
 };

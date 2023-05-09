@@ -1,6 +1,7 @@
 import React, { createContext, useState } from "react";
 import { CognitoUserPool } from "amazon-cognito-identity-js";
 import { getSession } from "../functions/auth";
+import PropTypes from "prop-types";
 
 export const AuthContext = createContext(null);
 
@@ -29,3 +30,7 @@ const AuthContextProvider = ({ children }) => {
 };
 
 export default AuthContextProvider;
+
+AuthContextProvider.propTypes = {
+  children: PropTypes.element,
+};

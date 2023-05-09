@@ -8,11 +8,9 @@ import "./App.css";
 // import useAuth from "./hooks/useAuth";
 import { AuthContext } from "./contexts/AuthContext";
 import AccountPage from "./pages/AccountPage";
-import SignInPage from "./pages/SignInPage";
-import SignUpPage from "./pages/SignUpPage";
-import ConfirmRegistrationPage from "./pages/ConfirmRegistrationPage";
 import { verifySessionAndRefresh } from "./functions/auth";
 import { Container } from "react-bootstrap";
+import AuthPage from "./pages/AuthPage";
 
 const App = () => {
   const { user } = useContext(AuthContext);
@@ -31,17 +29,21 @@ const App = () => {
       element: <RecipePage />,
     },
     {
-      path: "/signin",
-      element: <SignInPage />,
+      path: "/auth",
+      element: <AuthPage />,
     },
-    {
-      path: "/signup",
-      element: <SignUpPage />,
-    },
-    {
-      path: "/confirm",
-      element: <ConfirmRegistrationPage />,
-    },
+    // {
+    //   path: "/signin",
+    //   element: <SignInPage />,
+    // },
+    // {
+    //   path: "/signup",
+    //   element: <SignUpPage />,
+    // },
+    // {
+    //   path: "/confirm",
+    //   element: <ConfirmRegistrationPage />,
+    // },
   ]);
 
   useEffect(() => {

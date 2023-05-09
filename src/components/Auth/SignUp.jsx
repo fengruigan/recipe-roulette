@@ -1,23 +1,20 @@
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import { Button, Form, Container } from "react-bootstrap";
-import { Link, useNavigate } from "react-router-dom";
-import { AuthContext } from "../contexts/AuthContext";
+import { AuthContext } from "../../contexts/AuthContext";
+import PropTypes from "prop-types";
 
-import { signUpUser } from "../functions/auth";
+import { signUpUser } from "../../functions/auth";
 
-const SignUp = () => {
+const SignUp = ({ email, setEmail, password, setPassword, setForm }) => {
   document.title = "Recipe Roulette | Sign-up";
-  const [password, setPassword] = useState("");
-  const [email, setEmail] = useState("");
   const { userPool, setUser } = useContext(AuthContext);
-  const navigate = useNavigate();
 
   const handleSignUp = async (e) => {
     e.preventDefault();
     const result = await signUpUser(userPool, email, password);
     if (result) {
       await setUser(result.user);
-      navigate("/confirm");
+      await setForm("confirmRegistration");
     } else alert("Something went wrong");
   };
 
@@ -30,7 +27,7 @@ const SignUp = () => {
           <Form.Control
             type="email"
             placeholder="Enter email"
-            defaultValue={email}
+            value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
           <Form.Text className="text-muted">We&rsquo;ll never share your email with anyone else.</Form.Text>
@@ -41,7 +38,7 @@ const SignUp = () => {
           <Form.Control
             type="password"
             placeholder="Password"
-            defaultValue={password}
+            value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
         </Form.Group>
@@ -49,7 +46,9 @@ const SignUp = () => {
           Sign Up
         </Button>
         <Form.Text className="ms-2" muted={false}>
-          Already have an account? <Link to="/signin">Sign in</Link>
+          <span className="text-primary" onClick={() => setForm("signIn")}>
+            Already have an account? Sign in
+          </span>
         </Form.Text>
       </Form>
     </Container>
@@ -57,3 +56,11 @@ const SignUp = () => {
 };
 
 export default SignUp;
+
+SignUp.propTypes = {
+  email: PropTypes.string,
+  setEmail: PropTypes.func,
+  password: PropTypes.string,
+  setPassword: PropTypes.func,
+  setForm: PropTypes.func,
+};

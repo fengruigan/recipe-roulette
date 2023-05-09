@@ -1,37 +1,28 @@
-import React, { useContext, useEffect, useState } from "react";
+import { PropTypes } from "prop-types";
+import React, { useContext, useState } from "react";
 import { Button, Form, Container } from "react-bootstrap";
-import { Link } from "react-router-dom";
-import { AuthContext } from "../contexts/AuthContext";
-import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../../contexts/AuthContext";
 
-import { confirmRegistration, resendConfirmationCode } from "../functions/auth";
+import { confirmRegistration, resendConfirmationCode } from "../../functions/auth";
 
-const ConfirmRegistration = () => {
+const ConfirmRegistration = ({ email, password, setForm }) => {
   document.title = "Recipe Roulette | Confirm Sign-Up";
   const [code, setCode] = useState("");
-  const { user, setUser, setIsAuthed } = useContext(AuthContext);
+  const { userPool, user, setUser, setIsAuthed } = useContext(AuthContext);
   const [resendCountDown, setResendCountDown] = useState(null);
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    if (!user) {
-      alert("Flow error");
-    }
-  }, []);
 
   const handleConfirm = async (e) => {
     e.preventDefault();
     try {
-      const result = await confirmRegistration(user, code);
-      if (result === "SUCCESS") {
-        await setUser(user);
+      const result = await confirmRegistration(userPool, email, password, code);
+      if (result.success === true) {
+        await setUser(result.user);
         await setIsAuthed(true);
-        navigate("/account");
       }
     } catch (err) {
       if (err.code === "CodeMismatchException") {
         // Error handle
-        console.log("Code mismatch");
+        alert("Code mismatch");
       }
     }
   };
@@ -79,11 +70,10 @@ const ConfirmRegistration = () => {
         <Button variant="secondary" className="ms-1" disabled={!!resendCountDown} onClick={handleResendCode}>
           {resendCountDown ? `Redend in ${resendCountDown}s` : "Resend Code"}
         </Button>
-        <Button variant="warning" className="ms-1" onClick={() => navigate("/signin")}>
-          Retry
-        </Button>
         <Form.Text className="ms-2" muted={false}>
-          <Link to="/signin">Back to Sign in</Link>
+          <span className="text-primary cursor-pointer" onClick={() => setForm("signIn")}>
+            Back to Sign in
+          </span>
         </Form.Text>
       </Form>
     </Container>
@@ -91,3 +81,9 @@ const ConfirmRegistration = () => {
 };
 
 export default ConfirmRegistration;
+
+ConfirmRegistration.propTypes = {
+  email: PropTypes.string,
+  password: PropTypes.string,
+  setForm: PropTypes.func,
+};

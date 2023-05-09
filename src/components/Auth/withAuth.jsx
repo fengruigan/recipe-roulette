@@ -11,7 +11,7 @@ const withAuth = (WrappedComponent) => {
     const checkAuth = async () => {
       if (!isAuthed) {
         setTimeout(() => {
-          navigate("/signin");
+          navigate("/auth");
         }, 3000);
         setInterval(() => {
           countDown > 0 && setCountDown(countDown - 1);
