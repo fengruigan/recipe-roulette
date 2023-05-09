@@ -1,7 +1,7 @@
 {
   "name": "recipe",
   "version": "0.1.0",
-  "homepage": "https://fengruigan.github.io/recipe-roulette/#",
+  "homepage": "https://fengruigan.github.io/recipe-roulette",
   "license": "MIT",
   "private": true,
   "dependencies": {
@@ -30,6 +30,8 @@
     "start": "react-scripts start",
     "prebuild": "rm -rf ./build",
     "build": "yarn run checkstyle && react-scripts build",
+    "predeploy": "yarn run build",
+    "deploy": "gh-pages -d ./build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },

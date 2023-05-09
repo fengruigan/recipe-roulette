@@ -4,3 +4,6 @@
 # Artifacts
 /build
 coverage
+
+# misc
+.vscode

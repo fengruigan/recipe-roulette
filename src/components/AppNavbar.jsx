@@ -67,7 +67,9 @@ const AppNavbar = () => {
   return (
     <Navbar className="AppNavbar" bg="light" expand="lg">
       <Container>
-        <Navbar.Brand href="/">Recipe Roulette</Navbar.Brand>
+        <Navbar.Brand as={Link} to="/">
+          Recipe Roulette
+        </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="ms-auto me-0">
