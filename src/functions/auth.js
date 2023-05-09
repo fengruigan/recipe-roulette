@@ -88,14 +88,6 @@ const authenticateUser = (userPool, email, password) => {
         if (err.code === "UserNotConfirmedException") {
           resolve({ success: false, user: authenticatingUser });
           return;
-        }
-        if (err.code === "UserNotFoundException") {
-          reject(err);
-          return;
-        }
-        if (err.code === "NotAuthorizedException") {
-          reject(err);
-          return;
         } else {
           reject(err);
           return;

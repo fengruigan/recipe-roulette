@@ -1,15 +1,17 @@
-import { PropTypes } from "prop-types";
 import React, { useContext, useState } from "react";
 import { Button, Form, Container } from "react-bootstrap";
-import { AuthContext } from "../../contexts/AuthContext";
+import Notification from "../Notification";
 
+import { AuthContext } from "../../contexts/AuthContext";
 import { confirmRegistration, resendConfirmationCode } from "../../functions/auth";
+import { PropTypes } from "prop-types";
 
 const ConfirmRegistration = ({ email, password, setForm }) => {
   document.title = "Recipe Roulette | Confirm Sign-Up";
   const [code, setCode] = useState("");
   const { userPool, user, setUser, setIsAuthed } = useContext(AuthContext);
   const [resendCountDown, setResendCountDown] = useState(null);
+  const [error, setError] = useState(null);
 
   const handleConfirm = async (e) => {
     e.preventDefault();
@@ -18,12 +20,17 @@ const ConfirmRegistration = ({ email, password, setForm }) => {
       if (result.success === true) {
         await setUser(result.user);
         await setIsAuthed(true);
+      } else {
+        setError({ name: "UnknownException", message: "Something went wrong :(" });
       }
     } catch (err) {
+      const error = { name: err.code };
       if (err.code === "CodeMismatchException") {
-        // Error handle
-        alert("Code mismatch");
+        error.message = "The confirmation code does not match.";
+      } else {
+        error.message = "Something went wrong :(";
       }
+      setError(error);
     }
   };
 
@@ -62,6 +69,7 @@ const ConfirmRegistration = ({ email, password, setForm }) => {
             placeholder="Enter code"
             defaultValue={code}
             onChange={(e) => setCode(e.target.value)}
+            required
           />
         </Form.Group>
         <Button variant="primary" onClick={handleConfirm}>
@@ -76,6 +84,7 @@ const ConfirmRegistration = ({ email, password, setForm }) => {
           </span>
         </Form.Text>
       </Form>
+      {error && <Notification type="danger" title={error?.name} body={error?.message} onClose={() => setError(null)} />}
     </Container>
   );
 };
