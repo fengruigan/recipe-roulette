@@ -9,7 +9,7 @@ import { PropTypes } from "prop-types";
 const SignIn = ({ email, setEmail, password, setPassword, setForm }) => {
   document.title = "Recipe Roulette | Sign-in";
   const [error, setError] = useState(null);
-  const { userPool, setUser, setIsAuthed } = useContext(AuthContext);
+  const { userPool, setUser } = useContext(AuthContext);
 
   const handleSignIn = async (e) => {
     e.preventDefault();
@@ -18,9 +18,7 @@ const SignIn = ({ email, setEmail, password, setPassword, setForm }) => {
       if (result.user) {
         await setUser(result.user);
       }
-      if (result.success) {
-        await setIsAuthed(true);
-      } else {
+      if (!result.success) {
         setForm("confirmRegistration");
       }
     } catch (err) {

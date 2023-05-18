@@ -3,7 +3,7 @@ import { CognitoUser, AuthenticationDetails, CognitoUserSession } from "amazon-c
 const getSession = (user) => {
   return new Promise((resolve, reject) => {
     if (!user) {
-      reject("No user specified");
+      reject(new Error("No user specified"));
       return;
     }
     user.getSession((err, session) => {
@@ -20,7 +20,7 @@ const getSession = (user) => {
 const getAuthedUserEmail = (user) => {
   return new Promise((resolve, reject) => {
     if (!user) {
-      reject("No user specified");
+      reject(new Error("No user specified"));
       return;
     }
     user.getUserAttributes((err, result) => {
@@ -38,7 +38,7 @@ const getAuthedUserEmail = (user) => {
 const verifySessionAndRefresh = (user) => {
   return new Promise((resolve, reject) => {
     if (!user) {
-      reject("No user specified");
+      reject(new Error("No user specified"));
       return;
     }
     user.getSession((err, session) => {
@@ -134,7 +134,7 @@ const confirmRegistration = (userPool, email, password, code) => {
 const resendConfirmationCode = (user) => {
   return new Promise((resolve, reject) => {
     if (!user) {
-      reject("No user specified");
+      reject(new Error("No user specified"));
       return;
     }
     user.resendConfirmationCode((err, result) => {

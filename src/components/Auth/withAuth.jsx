@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../contexts/AuthContext";
 
 const withAuth = (WrappedComponent) => {
@@ -26,7 +26,7 @@ const withAuth = (WrappedComponent) => {
       <h1>Unauthorized</h1>
       Oops... You need to be signed in to view this page.
       <div>
-        You will be redirected to the sign in page in {countDown} seconds. Or click <a href="/signin">here</a> to sign
+        You will be redirected to the sign in page in {countDown} seconds. Or click <Link to="/auth">here</Link> to sign
         in
       </div>
     </div>

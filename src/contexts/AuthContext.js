@@ -1,6 +1,6 @@
-import React, { createContext, useState } from "react";
+import React, { createContext, useEffect, useState } from "react";
 import { CognitoUserPool } from "amazon-cognito-identity-js";
-import { getSession } from "../functions/auth";
+import { getSession, verifySessionAndRefresh } from "../functions/auth";
 import { PropTypes } from "prop-types";
 
 export const AuthContext = createContext(null);
@@ -16,14 +16,24 @@ const AuthContextProvider = ({ children }) => {
     if (user) getSession(user);
     return user;
   });
-  const [isAuthed, setIsAuthed] = useState(() => !!user);
+  const [isAuthed, setIsAuthed] = useState(false);
+
+  useEffect(() => {
+    const checkAuth = async () => {
+      try {
+        setIsAuthed(await verifySessionAndRefresh(user));
+      } catch (_) {
+        setIsAuthed(false);
+      }
+    };
+    checkAuth();
+  }, [user, setIsAuthed]);
 
   const values = {
     userPool,
     user,
     setUser,
     isAuthed,
-    setIsAuthed,
   };
 
   return <AuthContext.Provider value={values}>{children}</AuthContext.Provider>;
