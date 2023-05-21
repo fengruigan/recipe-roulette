@@ -1,9 +1,10 @@
-/* eslint-disable indent */
 import React, { useState } from "react";
 import Form from "react-bootstrap/Form";
 import InputGroup from "react-bootstrap/InputGroup";
 import Button from "react-bootstrap/Button";
 import RecipeDisplay from "../components/RecipeDisplay";
+
+import withAuth from "../components/Auth/withAuth";
 
 const RecipePage = () => {
   const [recipes, setRecipes] = useState([]);
@@ -30,13 +31,11 @@ const RecipePage = () => {
 
       <Button onClick={onFetch}>Fetch</Button>
 
-      {recipes
-        ? recipes.map((recipe, idx) => {
-            return <RecipeDisplay key={idx} />;
-          })
-        : null}
+      {recipes ? recipes.map((recipe, idx) => <RecipeDisplay key={idx} />) : null}
     </div>
   );
 };
 
-export default RecipePage;
+const WrappedRecipePage = () => withAuth(RecipePage);
+
+export default WrappedRecipePage;

@@ -26,7 +26,7 @@ const AuthPage = () => {
   };
   useEffect(() => {
     if (isAuthed) {
-      navigate("/account");
+      navigate("/");
     }
   }, [isAuthed]);
 
