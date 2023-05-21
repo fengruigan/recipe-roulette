@@ -9,7 +9,7 @@ import { PropTypes } from "prop-types";
 const ConfirmRegistration = ({ email, password, setForm }) => {
   document.title = "Recipe Roulette | Confirm Sign-Up";
   const [code, setCode] = useState("");
-  const { userPool, user, setUser, setIsAuthed } = useContext(AuthContext);
+  const { userPool, user, setUser } = useContext(AuthContext);
   const [resendCountDown, setResendCountDown] = useState(null);
   const [error, setError] = useState(null);
 
@@ -19,7 +19,7 @@ const ConfirmRegistration = ({ email, password, setForm }) => {
       const result = await confirmRegistration(userPool, email, password, code);
       if (result.success === true) {
         await setUser(result.user);
-        await setIsAuthed(true);
+        // await setIsAuthed(true);
       } else {
         setError({ name: "UnknownException", message: "Something went wrong :(" });
       }

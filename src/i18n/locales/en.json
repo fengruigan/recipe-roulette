@@ -1,0 +1,12 @@
+{
+  "navbar": {
+    "home": "Home",
+    "language": "Language",
+    "signIn": "Sign In/Up",
+    "account": "My Account",
+    "message": "Logged in as",
+    "inventory": "Inventory",
+    "plans": "Plans",
+    "logout": "Logout"
+  }
+}
