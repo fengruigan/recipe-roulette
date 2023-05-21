@@ -9,7 +9,7 @@ import AuthPage from "./pages/AuthPage";
 import LandingPage from "./pages/LandingPage";
 import RecipePage from "./pages/RecipePage";
 import "./index.css";
-import "./i18n";
+import "./i18n/i18n";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 

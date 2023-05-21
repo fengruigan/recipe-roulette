@@ -1,0 +1,12 @@
+{
+  "navbar": {
+    "home": "首页",
+    "language": "语言",
+    "signIn": "登录/注册",
+    "account": "我的账号",
+    "message": "登录账号",
+    "inventory": "我的库存",
+    "plans": "我的计划",
+    "logout": "登出"
+  }
+}
