@@ -10,6 +10,7 @@ import LandingPage from "./pages/LandingPage";
 import RecipePage from "./pages/RecipePage";
 import "./index.css";
 import "./i18n/i18n";
+import InventoryPage from "./pages/InventoryPage";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
@@ -29,6 +30,10 @@ const router = createHashRouter([
       {
         path: "/auth",
         element: <AuthPage />,
+      },
+      {
+        path: "/inventory",
+        element: <InventoryPage />,
       },
       {
         path: "*",
