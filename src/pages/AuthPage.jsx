@@ -10,7 +10,7 @@ import { AuthContext } from "../contexts/AuthContext";
 const AuthPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [form, setForm] = useState("confirmRegistration"); // signIn, signUp, confirmRegistration, PasswordRecovery
+  const [form, setForm] = useState("signIn"); // signIn, signUp, confirmRegistration, PasswordRecovery
   const { isAuthed } = useContext(AuthContext);
   const navigate = useNavigate();
 
