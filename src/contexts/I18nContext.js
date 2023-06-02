@@ -8,7 +8,7 @@ const I18nContextProvider = ({ children }) => {
   const { user } = useContext(AuthContext);
   const [locale, setLocale] = useState(() => {
     if (user) {
-      console.log("get locale info from user");
+      //   console.log("get locale info from user");
     }
     return "ZH";
   });

@@ -1,6 +1,7 @@
 import React, { useContext, useState } from "react";
 import { Button, Form, Container } from "react-bootstrap";
 import Notification from "../Notification";
+import { useTranslation } from "react-i18next";
 
 import { AuthContext } from "../../contexts/AuthContext";
 import { confirmRegistration, resendConfirmationCode } from "../../functions/auth";
@@ -12,6 +13,7 @@ const ConfirmRegistration = ({ email, password, setForm }) => {
   const { userPool, user, setUser } = useContext(AuthContext);
   const [resendCountDown, setResendCountDown] = useState(null);
   const [error, setError] = useState(null);
+  const { t } = useTranslation();
 
   const handleConfirm = async (e) => {
     e.preventDefault();
@@ -21,14 +23,14 @@ const ConfirmRegistration = ({ email, password, setForm }) => {
         await setUser(result.user);
         // await setIsAuthed(true);
       } else {
-        setError({ name: "UnknownException", message: "Something went wrong :(" });
+        setError({ name: "UnknownException", message: t("notification.internalError") });
       }
     } catch (err) {
       const error = { name: err.code };
       if (err.code === "CodeMismatchException") {
         error.message = "The confirmation code does not match.";
       } else {
-        error.message = "Something went wrong :(";
+        error.message = t("notification.internalError");
       }
       setError(error);
     }
@@ -47,6 +49,7 @@ const ConfirmRegistration = ({ email, password, setForm }) => {
     }, 1000);
   };
 
+  // TODO: send error msg
   const handleResendCode = async (e) => {
     e.preventDefault();
     try {
@@ -60,29 +63,28 @@ const ConfirmRegistration = ({ email, password, setForm }) => {
   };
   return (
     <Container style={{ width: "50%", margin: "auto", marginTop: "5%" }}>
-      <h1>Finish Signing Up</h1>
+      <h1>{t("authForm.confirmRegistration")}</h1>
       <Form>
         <Form.Group className="mb-3" controlId="formConfirmationCode">
-          <Form.Label>Confirmation Code</Form.Label>
+          <Form.Label>{t("authForm.confirmationCodeLabel")}</Form.Label>
           <Form.Control
             type="text"
-            placeholder="Enter code"
+            placeholder={t("authForm.confirmationCodePlaceholder")}
             defaultValue={code}
             onChange={(e) => setCode(e.target.value)}
             required
           />
         </Form.Group>
         <Button variant="primary" onClick={handleConfirm}>
-          Confirm
+          {t("authForm.confirmButton")}
         </Button>
+        {/* TODO: translate resend button in count down state */}
         <Button variant="secondary" className="ms-1" disabled={!!resendCountDown} onClick={handleResendCode}>
-          {resendCountDown ? `Redend in ${resendCountDown}s` : "Resend Code"}
+          {resendCountDown ? `Redend in ${resendCountDown}s` : t("authForm.resendConfirmation")}
         </Button>
-        <Form.Text className="ms-2" muted={false}>
-          <span className="text-primary cursor-pointer" onClick={() => setForm("signIn")}>
-            Back to Sign in
-          </span>
-        </Form.Text>
+        <Button variant="secondary" className="ms-1" onClick={() => setForm("signIn")}>
+          {t("authForm.backToSignIn")}
+        </Button>
       </Form>
       {error && <Notification type="danger" title={error?.name} body={error?.message} onClose={() => setError(null)} />}
     </Container>

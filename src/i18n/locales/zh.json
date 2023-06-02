@@ -8,5 +8,27 @@
     "inventory": "我的库存",
     "plans": "我的计划",
     "logout": "登出"
+  },
+  "authForm": {
+    "signIn": "登陆",
+    "signUp": "注册",
+    "emailLabel": "邮箱",
+    "emailPlaceholder": "在此输入邮箱",
+    "passwordLabel": "密码",
+    "passwordPlaceholder": "在此输入密码",
+    "newUserMsg": "新用户？<1>在此注册新账号</1>",
+    "existingUserMsg": "已经注册了? <1>在此登陆</1>",
+    "forgotPassword": "忘记密码",
+    "confirmRegistration": "验证邮箱",
+    "confirmationCodeLabel": "验证码",
+    "confirmationCodePlaceholder": "在此输入验证码",
+    "confirmButton": "验证",
+    "resendConfirmation": "重新发送",
+    "backToSignIn": "返回登陆界面"
+  },
+  "notification": {
+    "userNotFound": "用户不存在，请重新尝试。",
+    "notAuthorized": "邮箱或密码有误，请重新尝试。",
+    "internalError": "啊，出错了 :("
   }
 }

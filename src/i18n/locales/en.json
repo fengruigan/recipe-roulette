@@ -8,5 +8,27 @@
     "inventory": "Inventory",
     "plans": "Plans",
     "logout": "Logout"
+  },
+  "authForm": {
+    "signIn": "Sign In",
+    "signUp": "Sign Up",
+    "emailLabel": "Email address",
+    "emailPlaceholder": "Enter email here",
+    "passwordLabel": "Password",
+    "passwordPlaceholder": "Enter password here",
+    "newUserMsg": "New User? <1>Create an account here</1>",
+    "existingUserMsg": "Already a user? <1>Sign in here</1>",
+    "forgotPassword": "Forgot Password",
+    "confirmRegistration": "Confirm Email",
+    "confirmationCodeLabel": "Confirmation Code",
+    "confirmationCodePlaceholder": "Enter code here",
+    "confirmButton": "Confirm",
+    "resendConfirmation": "Resend Code",
+    "backToSignIn": "Back to sign in"
+  },
+  "notification": {
+    "userNotFound": "The user does not exist, please try again.",
+    "notAuthorized": "The email/password is incorrect, please try again.",
+    "internalError": "Something went wrong :("
   }
 }
