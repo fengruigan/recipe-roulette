@@ -2,10 +2,10 @@ import React, { useContext, useState } from "react";
 import { Button, Form, Container } from "react-bootstrap";
 import Notification from "../Notification";
 import { useTranslation } from "react-i18next";
-
 import { AuthContext } from "../../contexts/AuthContext";
 import { confirmRegistration, resendConfirmationCode } from "../../functions/auth";
 import { PropTypes } from "prop-types";
+import fetchWrap from "../../functions/fetchWrap";
 
 const ConfirmRegistration = ({ email, password, setForm }) => {
   document.title = "Recipe Roulette | Confirm Sign-Up";
@@ -13,15 +13,22 @@ const ConfirmRegistration = ({ email, password, setForm }) => {
   const { userPool, user, setUser } = useContext(AuthContext);
   const [resendCountDown, setResendCountDown] = useState(null);
   const [error, setError] = useState(null);
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   const handleConfirm = async (e) => {
     e.preventDefault();
     try {
       const result = await confirmRegistration(userPool, email, password, code);
       if (result.success === true) {
-        await setUser(result.user);
-        // await setIsAuthed(true);
+        const createUser = await fetchWrap("/user", {
+          method: "POST",
+          body: JSON.stringify({ userId: result.user.username, language: i18n.language }),
+        });
+        if (createUser.ok) {
+          await setUser(result.user);
+        } else {
+          setError({ name: "UnknownException", message: t("notification.internalError") });
+        }
       } else {
         setError({ name: "UnknownException", message: t("notification.internalError") });
       }
