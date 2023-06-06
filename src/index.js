@@ -8,9 +8,9 @@ import NotFoundPage from "./pages/NotFoundPage";
 import AuthPage from "./pages/AuthPage";
 import LandingPage from "./pages/LandingPage";
 import RecipePage from "./pages/RecipePage";
+import InventoryPage from "./pages/InventoryPage";
 import "./index.css";
 import "./i18n/i18n";
-import InventoryPage from "./pages/InventoryPage";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 

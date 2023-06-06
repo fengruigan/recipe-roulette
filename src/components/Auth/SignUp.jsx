@@ -1,6 +1,7 @@
 import React, { useContext, useState } from "react";
 import { Button, Form, Container } from "react-bootstrap";
 import Notification from "../Notification";
+import { Trans, useTranslation } from "react-i18next";
 
 import { AuthContext } from "../../contexts/AuthContext";
 import { signUpUser } from "../../functions/auth";
@@ -10,6 +11,7 @@ const SignUp = ({ email, setEmail, password, setPassword, setForm }) => {
   document.title = "Recipe Roulette | Sign-up";
   const { userPool, setUser } = useContext(AuthContext);
   const [error, setError] = useState(null);
+  const { t } = useTranslation();
 
   const handleSignUp = async (e) => {
     e.preventDefault();
@@ -19,7 +21,7 @@ const SignUp = ({ email, setEmail, password, setPassword, setForm }) => {
         await setUser(result.user);
         await setForm("confirmRegistration");
       } else {
-        setError({ name: "UnknownException", message: "Something went wrong :(" });
+        setError({ name: "UnknownException", message: t("notification.internalError") });
       }
     } catch (err) {
       const error = { name: err.code };
@@ -34,7 +36,7 @@ const SignUp = ({ email, setEmail, password, setPassword, setForm }) => {
           error.message = "Email must be a valid email";
           break;
         default:
-          error.message = "Something went wrong :(";
+          error.message = t("notification.internalError");
           break;
       }
       setError(error);
@@ -43,38 +45,39 @@ const SignUp = ({ email, setEmail, password, setPassword, setForm }) => {
 
   return (
     <Container style={{ width: "50%", margin: "auto", marginTop: "5%" }}>
-      <h1>Sign Up</h1>
+      <h1>{t("authForm.signUp")}</h1>
       <Form onSubmit={handleSignUp}>
         <Form.Group className="mb-3" controlId="formEmail">
-          <Form.Label>Email address</Form.Label>
+          <Form.Label>{t("authForm.emailLabel")}</Form.Label>
           <Form.Control
             type="email"
-            placeholder="Enter email"
+            placeholder={t("authForm.emailPlaceholder")}
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
           />
-          <Form.Text className="text-muted">We&rsquo;ll never share your email with anyone else.</Form.Text>
         </Form.Group>
 
         <Form.Group className="mb-3" controlId="formPassword">
-          <Form.Label>Password</Form.Label>
+          <Form.Label>{t("authForm.passwordLabel")}</Form.Label>
           <Form.Control
             type="password"
-            placeholder="Password"
+            placeholder={t("authForm.passwordPlaceholder")}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
           />
         </Form.Group>
         <Form.Text className="mb-2" muted={false} as="div">
-          Already a user?
-          <span className="ms-1 text-primary" onClick={() => setForm("signIn")}>
-            Sign in here
-          </span>
+          <Trans i18nKey="authForm.existingUserMsg">
+            Already a user?
+            <span className="ms-1 text-primary" onClick={() => setForm("signIn")}>
+              Sign in here
+            </span>
+          </Trans>
         </Form.Text>
         <Button variant="primary" type="submit">
-          Sign Up
+          {t("authForm.signUp")}
         </Button>
       </Form>
       {error && <Notification type="danger" title={error?.name} body={error?.message} onClose={() => setError(null)} />}

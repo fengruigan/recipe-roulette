@@ -14,27 +14,51 @@ import Navbar from "react-bootstrap/Navbar";
 import { NavDropdown } from "react-bootstrap";
 import { AuthContext } from "../contexts/AuthContext";
 import { getAuthedUserEmail, logout } from "../functions/auth";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import { useTranslation } from "react-i18next";
+import fetchWrap from "../functions/fetchWrap";
 
 const AppNavbar = () => {
   const [displayEmail, setDisplayEmail] = useState(null);
+  const [changingLanguage, setChangingLanguage] = useState(false);
   const { user, setUser, isAuthed } = useContext(AuthContext);
+  const navigate = useNavigate();
   const { t, i18n } = useTranslation();
 
   useEffect(() => {
     const displayEmail = async () => {
-      if (user && isAuthed) {
+      if (isAuthed) {
         const email = await getAuthedUserEmail(user);
         setDisplayEmail(email);
       } else {
         setDisplayEmail(null);
       }
     };
-
     displayEmail();
   }, [user, isAuthed, getAuthedUserEmail]);
+
+  const handleChangeLanguage = async (language) => {
+    if (!isAuthed) {
+      i18n.changeLanguage(language);
+      return;
+    } else {
+      setChangingLanguage(true);
+      const response = await fetchWrap("/user/settings", {
+        method: "POST",
+        body: {
+          userId: user.username,
+          language,
+        },
+      });
+      if (response.ok) {
+        i18n.changeLanguage(language);
+      } else {
+        alert("Failed to connect to server");
+      }
+      setChangingLanguage(false);
+    }
+  };
 
   const languageDropdown = (
     <NavDropdown
@@ -46,8 +70,12 @@ const AppNavbar = () => {
       }
       align="end"
     >
-      <NavDropdown.Item onClick={() => i18n.changeLanguage("ZH")}>简体中文</NavDropdown.Item>
-      <NavDropdown.Item onClick={() => i18n.changeLanguage("EN")}>English</NavDropdown.Item>
+      <NavDropdown.Item disabled={changingLanguage} onClick={() => handleChangeLanguage("ZH")}>
+        简体中文
+      </NavDropdown.Item>
+      <NavDropdown.Item disabled={changingLanguage} onClick={() => handleChangeLanguage("EN")}>
+        English
+      </NavDropdown.Item>
     </NavDropdown>
   );
 
@@ -76,9 +104,10 @@ const AppNavbar = () => {
       </NavDropdown.Item>
       <NavDropdown.Divider />
       <NavDropdown.Item
-        onClickCapture={() => {
+        onClickCapture={async () => {
           logout(user);
-          setUser(null);
+          await setUser(null);
+          navigate("/");
         }}
       >
         {t("navbar.logout")}

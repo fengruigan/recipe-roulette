@@ -150,9 +150,6 @@ const resendConfirmationCode = (user) => {
 
 const logout = (user) => {
   user.signOut();
-  if (window.location.pathname !== "/") {
-    window.location.href = "/";
-  }
 };
 
 export {
