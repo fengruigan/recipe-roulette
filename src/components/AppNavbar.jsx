@@ -15,6 +15,7 @@ import { NavDropdown } from "react-bootstrap";
 import { AuthContext } from "../contexts/AuthContext";
 import { getAuthedUserEmail, logout } from "../functions/auth";
 import { Link, useNavigate } from "react-router-dom";
+import Notification from "./Notification";
 
 import { useTranslation } from "react-i18next";
 import fetchWrap from "../functions/fetchWrap";
@@ -25,6 +26,8 @@ const AppNavbar = () => {
   const { user, setUser, isAuthed } = useContext(AuthContext);
   const navigate = useNavigate();
   const { t, i18n } = useTranslation();
+  const [error, setError] = useState(null);
+  const [showLogoutMsg, setShowLogoutMsg] = useState(false);
 
   useEffect(() => {
     const displayEmail = async () => {
@@ -54,7 +57,7 @@ const AppNavbar = () => {
       if (response.ok) {
         i18n.changeLanguage(language);
       } else {
-        alert("Failed to connect to server");
+        setError({ name: "DbWriteException", message: "Failed to update user settings" });
       }
       setChangingLanguage(false);
     }
@@ -107,6 +110,7 @@ const AppNavbar = () => {
         onClickCapture={async () => {
           logout(user);
           await setUser(null);
+          await setShowLogoutMsg(true);
           navigate("/");
         }}
       >
@@ -139,6 +143,17 @@ const AppNavbar = () => {
           </Nav>
         </Navbar.Collapse>
       </Container>
+      {error && <Notification onClose={() => setError(null)} type="danger" body={error.message} title={error.name} />}
+      {showLogoutMsg && (
+        <Notification
+          onClose={() => setShowLogoutMsg(false)}
+          type="info"
+          position="top-end"
+          body="See you soon!"
+          title="Logged out"
+          autohide={false}
+        />
+      )}
     </Navbar>
   );
 };
