@@ -4,7 +4,7 @@ import { useState } from "react";
 import TestingData from '../TestingData.json';
 import "../InventoryPage.css";
 import { FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-
+import { useTranslation } from "react-i18next";
 
 // const InventoryColumns = () => {
 //   {/* Function to store current inventory */}
@@ -64,6 +64,8 @@ const InventoryPage = () => {
   };
   const [ButtonsClicked, setButtonsClicked] = useState([]);
   const [language, setLanguage] = useState("EN");
+  const {i18n} = useTranslation();
+  
   const columns = [
     // #Q# How to get categoryZH and nameZH instead if the user chose ZH
     // String interpolation (== template string) shorter than if-else
@@ -104,7 +106,7 @@ const renderButtonsClicked = () => {
   // Push to Github
   // Clicked --> Button turn to Blue;
   // Submit --> Submit the List
-    
+
   return (
     <Container fluid>
       <Row>
@@ -121,7 +123,8 @@ const renderButtonsClicked = () => {
           <>
           {MeatFiltered.map((item, index) => (
             <Button key={index} variant="outline-dark" onClick={() => Clicked(item[`name${language}`])}>
-              {item[`name${language}`]} 
+              {item[`name${language}`]}
+              {console.log(i18n.language)} 
             </Button>
           ))}</>
           {/* <table className = "table">
