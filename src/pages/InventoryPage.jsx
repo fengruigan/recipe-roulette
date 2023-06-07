@@ -145,7 +145,7 @@ const InventoryPage = () => {
 
           <h5>Your Inventory</h5>
           {ButtonsClicked.map((ButtonsClicked, index) => (
-            <b>{ButtonsClicked}, </b>
+            <strong key={index}>{ButtonsClicked}, </strong>
           ))}
           <br />
           <br />
